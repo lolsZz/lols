@@ -19,6 +19,8 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 		setCustomInstructions,
 		alwaysAllowReadOnly,
 		setAlwaysAllowReadOnly,
+		automaticMode,
+		setAutomaticMode,
 		openRouterModels,
 	} = useExtensionState()
 	const [apiErrorMessage, setApiErrorMessage] = useState<string | undefined>(undefined)
@@ -33,6 +35,7 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 			vscode.postMessage({ type: "apiConfiguration", apiConfiguration })
 			vscode.postMessage({ type: "customInstructions", text: customInstructions })
 			vscode.postMessage({ type: "alwaysAllowReadOnly", bool: alwaysAllowReadOnly })
+			vscode.postMessage({ type: "automaticMode", bool: automaticMode })
 			onDone()
 		}
 	}
@@ -127,6 +130,23 @@ const SettingsView = ({ onDone }: SettingsViewProps) => {
 						}}>
 						When enabled, Cline will automatically read files, view directories, and inspect sites without
 						requiring you to click the Approve button.
+					</p>
+				</div>
+
+				<div style={{ marginBottom: 5 }}>
+					<VSCodeCheckbox
+						checked={automaticMode}
+						onChange={(e: any) => setAutomaticMode(e.target.checked)}>
+						<span style={{ fontWeight: "500" }}>Enable Automatic Mode</span>
+					</VSCodeCheckbox>
+					<p
+						style={{
+							fontSize: "12px",
+							marginTop: "5px",
+							color: "var(--vscode-descriptionForeground)",
+						}}>
+						When enabled, Claude will automatically try to solve tasks without asking for your permission for actions.
+						This includes write operations and command executions.
 					</p>
 				</div>
 
